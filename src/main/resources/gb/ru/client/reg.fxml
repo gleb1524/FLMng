@@ -6,7 +6,7 @@
 <VBox fx:id="vBox" xmlns="http://javafx.com/javafx"
       spacing="10"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="gb.ru.RegController"
+      fx:controller="gb.ru.client.RegController"
       prefHeight="400.0" prefWidth="600.0">
     <stylesheets>
         <URL value="@/style.css"/>
