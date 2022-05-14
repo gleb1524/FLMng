@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -22,8 +21,7 @@ public class WorkController implements Initializable {
     private final String clientPath = "client-dir";
     private final String serverPath = "server-dir";
 
-    @FXML
-    public Button move;
+
     @FXML
     public TableView<FileInfo> clientTable;
     @FXML
@@ -41,7 +39,7 @@ public class WorkController implements Initializable {
     @FXML
     public void clickToClose(ActionEvent actionEvent) {
         Platform.runLater(() -> {
-           Stage stage =(Stage) move.getScene().getWindow();
+           Stage stage =(Stage) clientTable.getScene().getWindow();
            stage.close();
             NettyClient.getChannel().close();
             NettyClient.getEventLoopGroup().shutdownGracefully();
