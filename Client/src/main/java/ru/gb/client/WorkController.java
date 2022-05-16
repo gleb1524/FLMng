@@ -4,66 +4,65 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.VBox;
 import ru.gb.client.net.ClientService;
 import ru.gb.client.net.NettyClient;
-import ru.gb.dto.FileInfo;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class WorkController implements Initializable {
 
 
-    private final String clientPath = "client-dir";
-    private final String serverPath = "server-dir";
+    public VBox clientPanel;
+    public VBox serverPanel;
 
 
-    @FXML
-    public TableView<FileInfo> clientTable;
-    @FXML
-    public TextField clientDir;
-    @FXML
-    public TextField serverDir;
-    @FXML
-    public TableView<FileInfo> serverTable;
 
-
-    @FXML
-    public void copyFile(ActionEvent actionEvent) {
-
-    }
     @FXML
     public void clickToClose(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-           Stage stage =(Stage) clientTable.getScene().getWindow();
-           stage.close();
-            NettyClient.getChannel().close();
-            NettyClient.getEventLoopGroup().shutdownGracefully();
-        });
+        Platform.exit();
+        NettyClient.getEventLoopGroup().shutdownGracefully();
     }
 
-    @FXML
-    public void selectDiskAction(ActionEvent actionEvent) {
-    }
-    @FXML
-    public void btnPathUpAction(ActionEvent actionEvent) {
-    }
+
     @FXML
     public void deleteBtnAction(ActionEvent actionEvent) {
     }
     @FXML
     public void copyBtnAction(ActionEvent actionEvent) {
-        System.out.println(ClientService.getAuth());
+        WorkWindow clientWorkWindow = (WorkWindow) clientPanel.getProperties().get("ctrl");
+        WorkWindow serverWorkWindow = (WorkWindow) serverPanel.getProperties().get("ctrl");
+
+        if(clientWorkWindow.selectedFilename() == null && serverWorkWindow.selectedFilename() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Missing files", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+
+        WorkWindow srcWorkWindow = null, dstWorkWindow = null;
+        if(clientWorkWindow.selectedFilename() != null){
+            srcWorkWindow = clientWorkWindow;
+            dstWorkWindow = serverWorkWindow;
+        }
+        if(serverWorkWindow.selectedFilename() != null){
+            srcWorkWindow = serverWorkWindow;
+            dstWorkWindow = clientWorkWindow;
+        }
+
+        Path srcPath = Paths.get(srcWorkWindow.getCurrentPath(), srcWorkWindow.selectedFilename());
+        Path dstPath = Paths.get(dstWorkWindow.getCurrentPath()).resolve(srcPath.getFileName().toString());
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ClientService.setWorkController(this);
-        new WorkWindow(clientTable, Paths.get(clientPath), clientDir);
-        new WorkWindow(serverTable, Paths.get(serverPath), serverDir);
-    }
 
+    }
+    @FXML
+    public void openBtnAction(ActionEvent actionEvent) {
+    }
 }
