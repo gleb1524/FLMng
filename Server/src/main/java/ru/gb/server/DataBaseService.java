@@ -78,4 +78,39 @@ public class DataBaseService {
         }
         return "Not_found";
     }
+    public void authRegister(String auth, String login) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement
+                ("INSERT INTO AuthTable (auth, login) VALUES (?, ?);") ){
+            preparedStatement.setString(1, auth);
+            preparedStatement.setString(2, login);
+            preparedStatement.executeUpdate();
+
+        }
+    }
+
+    public boolean isAuthRegister(String auth, String login) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement
+                ("SELECT id FROM AuthTable WHERE auth = ? and login = ?;")){
+            preparedStatement.setString(1, auth);
+            preparedStatement.setString(2, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAuthRegister(String auth, String login) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement
+                ("SELECT auth, login FROM AuthTable WHERE auth = ? and login = ?;")){
+            preparedStatement.setString(1, auth);
+            preparedStatement.setString(2,login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getString(1).equals(auth)&&resultSet.getString(2).equals(login);
+            }
+        }
+        return false;
+    }
 }

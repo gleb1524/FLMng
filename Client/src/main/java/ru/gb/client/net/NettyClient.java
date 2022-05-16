@@ -30,7 +30,7 @@ public class NettyClient {
         bootstrap
                 .group(eventLoopGroup)
                 .channel(NioSocketChannel.class);
-        bootstrap.remoteAddress("localhost", 45001);
+        bootstrap.remoteAddress("localhost", 45003);
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel)  {

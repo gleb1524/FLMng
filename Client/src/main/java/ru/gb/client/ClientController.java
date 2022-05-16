@@ -5,10 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.gb.client.net.ClientService;
@@ -44,8 +41,8 @@ public class ClientController implements Initializable {
     @FXML
     public void authorization(ActionEvent actionEvent) throws IOException {
         AuthRequest authRequest = new AuthRequest(login.getText(), password.getText());
+        ClientService.setLogin(login.getText());
         NettyClient.getChannel().writeAndFlush(authRequest);
-//        Client.setRoot("authorization");
     }
 
     @FXML
@@ -55,6 +52,15 @@ public class ClientController implements Initializable {
             stage.close();
             NettyClient.getEventLoopGroup().shutdownGracefully();
         });
+    }
+
+    public  void workPlace(boolean is) throws IOException {
+        if(is){
+            Alert alert = new Alert(Alert.AlertType.NONE, "Wrong login or password. Try again");
+            alert.show();
+        }else{
+            Client.setRoot("auth");
+        }
     }
 
 

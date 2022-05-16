@@ -22,23 +22,24 @@
             <MenuItem text="Для корректного закрытия программы воспользуйтесь File -&gt; Close. Кнопки Save, Format и Edit пока не работают" />
         </Menu>
     </MenuBar>
-<!--    <HBox>-->
-<!--        <ComboBox onAction="#selectDiskAction" fx:id="disksBoxClient"/>-->
-<!--        <TextField fx:id="clientDir" editable="false" HBox.hgrow="ALWAYS"/>-->
-<!--        <Button text="Up" onAction="#btnPathUpAction"/>-->
-<!--        <ComboBox onAction="#selectDiskAction" fx:id="disksBoxServer"/>-->
-<!--        <TextField fx:id="serverDir" editable="false" HBox.hgrow="ALWAYS"/>-->
-<!--        <Button text="Up" onAction="#btnPathUpAction"/>-->
-<!--    </HBox>-->
+    <HBox>
+        <ComboBox onAction="#selectDiskActionClient" fx:id="disksBoxClient"/>
+        <TextField fx:id="clientDir" editable="false" HBox.hgrow="ALWAYS"/>
+        <Button text="Up" onAction="#btnPathUpActionClient"/>
+        <ComboBox onAction="#selectDiskActionServer" fx:id="disksBoxServer"/>
+        <TextField fx:id="serverDir" editable="false" HBox.hgrow="ALWAYS"/>
+        <Button text="Up" onAction="#btnPathUpActionServer"/>
+
+    </HBox>
     <HBox VBox.vgrow="ALWAYS">
-<!--        <TableView fx:id="clientTable" focusTraversable="false" maxHeight="Infinity" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity" />-->
-<!--        <TableView fx:id="serverTable" focusTraversable="false" maxHeight="Infinity" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity" />-->
-        <fx:include fx:id="clientPanel" source="panel.fxml" HBox.hgrow="ALWAYS"/>
-        <fx:include fx:id="serverPanel" source="panel.fxml" HBox.hgrow="ALWAYS"/>
+        <TableView fx:id="clientTable" focusTraversable="false" maxHeight="Infinity" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        <TableView fx:id="serverTable" focusTraversable="false" maxHeight="Infinity" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+<!--        <fx:include fx:id="clientPanel" source="panel.fxml" HBox.hgrow="ALWAYS"/>-->
+<!--        <fx:include fx:id="serverPanel" source="panel.fxml" HBox.hgrow="ALWAYS"/>-->
     </HBox>
 
     <HBox spacing="5.0">
-        <Button text="Open" focusTraversable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#openBtnAction"/>
+        <Button text="Creat dir" focusTraversable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#creatDirAction"/>
         <Button text="Copy" focusTraversable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#copyBtnAction"/>
         <Button text="Move" focusTraversable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
         <Button text="Delete" focusTraversable="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#deleteBtnAction"/>

@@ -4,12 +4,32 @@ import ru.gb.client.ClientController;
 import ru.gb.client.WorkController;
 import ru.gb.client.RegController;
 
+import java.nio.file.Path;
+
 public class ClientService {
 
    private static RegController regController;
    private static WorkController workController;
    private static ClientController clientController;
    private static String auth;
+   private static String serverPath;
+   private static String login;
+
+    public static String getLogin() {
+        return login;
+    }
+
+    public static void setLogin(String login) {
+        ClientService.login = login;
+    }
+
+    public static String getServerPath() {
+        return serverPath;
+    }
+
+    public static void setServerPath(String serverPath) {
+        ClientService.serverPath = serverPath;
+    }
 
     public static String getAuth() {
         return auth;

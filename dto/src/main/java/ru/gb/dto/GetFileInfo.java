@@ -1,53 +1,37 @@
-package ru.gb.client;
+package ru.gb.dto;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import ru.gb.dto.FileInfo;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class WorkWindow implements Initializable {
-    @FXML
-    public ComboBox disksBox;
-    @FXML
-    public TextField pathField;
-    @FXML
-    public TableView<FileInfo> filesTable;
-    private final String clientPath = "client-dir";
-    private final String serverPath = "server-dir";
+public class GetFileInfo {
 
-
-
-    public void updateList(Path path) {
+    public void updateList(Path path, TableView<FileInfo> fileDir, TextField address) {
         try {
             Path currentPath = path.normalize().toAbsolutePath();
-            pathField.setText(currentPath.toString());
-            filesTable.getItems().clear();
-            filesTable.getItems().addAll(Files.list(path).map(FileInfo::new).collect(Collectors.toList()));
-            filesTable.sort();
+            address.setText(currentPath.toString());
+            fileDir.getItems().clear();
+            fileDir.getItems().addAll(Files.list(path).map(FileInfo::new).collect(Collectors.toList()));
+            fileDir.sort();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "По какой-то неведомой причине не удалось обновить список файлов", ButtonType.OK);
             alert.showAndWait();
         }
     }
 
+    public GetFileInfo(TableView<FileInfo> filesTable, Path path, TextField address) {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateList(path, filesTable, address);
+
         TableColumn<FileInfo, String> fileTypeColumn = new TableColumn("Type");
         fileTypeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFileType().toString()));
         fileTypeColumn.setPrefWidth(50);
@@ -86,21 +70,13 @@ public class WorkWindow implements Initializable {
         });
         fileSizeColumn.setPrefWidth(50);
 
-        disksBox.getItems().clear();
-        for(Path p : FileSystems.getDefault().getRootDirectories()){
-            disksBox.getItems().add(p.toString());
-        }
-        disksBox.getSelectionModel().select(0);
-
-        updateList(Paths.get("."));
-
         filesTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getClickCount() == 2){
-                    Path path = Paths.get(pathField.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFileName());
+                    Path path = Paths.get(address.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFileName());
                     if(Files.isDirectory(path)){
-                        updateList(path);
+                        updateList(path, filesTable, address);
                     }
                 }
             }
@@ -108,28 +84,6 @@ public class WorkWindow implements Initializable {
 
         filesTable.getColumns().addAll(fileTypeColumn, fileNameColumn,fileSizeColumn, lastModifiedColumn);
     }
-    @FXML
-    public void selectDiskAction(ActionEvent actionEvent) {
-        ComboBox<String> element = (ComboBox<String>) actionEvent.getSource();
-        updateList(Paths.get(element.getSelectionModel().getSelectedItem()));
-    }
-    @FXML
-    public void btnPathUpAction(ActionEvent actionEvent) {
-        Path parentPath = Paths.get(pathField.getText()).getParent();
-        if(parentPath != null){
-            updateList(parentPath);
-        }
-        System.out.println(filesTable.getId());
-    }
 
-    public String selectedFilename(){
-        if(!filesTable.isFocused()){
-            return null;
-        }
-        return filesTable.getSelectionModel().getSelectedItem().getFileName();
-    }
 
-    public String getCurrentPath(){
-        return pathField.getText();
-    }
 }

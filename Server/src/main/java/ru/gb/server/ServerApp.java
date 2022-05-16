@@ -26,7 +26,7 @@ public class ServerApp {
                                     new BasicHandler());
                         }
                     });
-            ChannelFuture f = serverBootstrap.bind(45001).sync();
+            ChannelFuture f = serverBootstrap.bind(45003).sync();
             f.channel().closeFuture().sync();
         }finally {
             workerGroup.shutdownGracefully();
