@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public class FileInfo {
-    public enum FileType{
+    public enum FileType {
         FILE("F"), DIRECTORY("D");
 
         private String name;
@@ -58,17 +58,17 @@ public class FileInfo {
         this.lastModified = lastModified;
     }
 
-    public FileInfo(Path path){
+    public FileInfo(Path path) {
         try {
             this.filename = path.getFileName().toString();
             this.size = Files.size(path);
             this.fileType = Files.isDirectory(path) ? FileType.DIRECTORY : FileType.FILE;
-            if(this.fileType == FileType.DIRECTORY){
+            if (this.fileType == FileType.DIRECTORY) {
                 this.size = -1L;
             }
             this.lastModified = LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneOffset.ofHours(0));
         } catch (IOException e) {
-           throw new RuntimeException("File not found or invalid");
+            throw new RuntimeException("File not found or invalid");
         }
     }
 }

@@ -1,26 +1,26 @@
-.button:hover{
+.button:hover {
     -fx-background-color: #A9A9A9;
 }
 
-#loginBusy,#registrationComplete{
+#loginBusy, #registrationComplete {
     -fx-font-size: 14;
 }
 
-#vBox{
+#vBox {
     -fx-background-color: #D3D3D3;
 }
 
-#textArea{
+#textArea {
     -fx-control-inner-background: #D3D3D3;
     -fx-font-size: 14;
-    -fx-border-color: #D3D3D3 ;
+    -fx-border-color: #D3D3D3;
     -fx-border-width: 0;
 }
 
-#clientWindow{
+#clientWindow {
     -fx-border-color: #696969;
 }
 
-#serverWindow{
+#serverWindow {
     -fx-border-color: #696969;
 }

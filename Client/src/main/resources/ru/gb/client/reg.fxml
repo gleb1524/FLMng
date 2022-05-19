@@ -7,7 +7,7 @@
       spacing="10"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="ru.gb.client.RegController"
-      >
+>
     <stylesheets>
         <URL value="@/style.css"/>
     </stylesheets>

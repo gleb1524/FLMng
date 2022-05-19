@@ -15,7 +15,7 @@ import ru.gb.dto.RegRequest;
 
 import java.io.IOException;
 
-public class RegController{
+public class RegController {
 
 
     @FXML
@@ -49,11 +49,11 @@ public class RegController{
         loginBusy.setVisible(false);
         registrationComplete.setVisible(false);
 
-            if(login.getText().isEmpty()||password.getText().isEmpty()||name.getText().isEmpty()||surname.getText().isEmpty()){
-                return;
-            }else{
-                RegRequest request = new RegRequest(login.getText(), password.getText(), name.getText(), surname.getText());
-                NettyClient.getChannel().writeAndFlush(request);
+        if (login.getText().isEmpty() || password.getText().isEmpty() || name.getText().isEmpty() || surname.getText().isEmpty()) {
+            return;
+        } else {
+            RegRequest request = new RegRequest(login.getText(), password.getText(), name.getText(), surname.getText());
+            NettyClient.getChannel().writeAndFlush(request);
 
 
         }
@@ -63,7 +63,6 @@ public class RegController{
     public void back(ActionEvent actionEvent) throws IOException {
         Client.setRoot("client");
     }
-
 
 
 }

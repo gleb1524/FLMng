@@ -1,11 +1,12 @@
 package ru.gb.dto;
 
-public class RegRequest implements BasicRequest{
+public class RegRequest implements BasicRequest {
 
     private String login;
     private String password;
     private String name;
     private String surname;
+
     @Override
     public String getType() {
         return "registration";

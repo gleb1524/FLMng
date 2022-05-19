@@ -1,19 +1,17 @@
 package ru.gb.client.net;
 
 import ru.gb.client.ClientController;
-import ru.gb.client.WorkController;
 import ru.gb.client.RegController;
-
-import java.nio.file.Path;
+import ru.gb.client.WorkController;
 
 public class ClientService {
 
-   private static RegController regController;
-   private static WorkController workController;
-   private static ClientController clientController;
-   private static String auth;
-   private static String serverPath;
-   private static String login;
+    private static RegController regController;
+    private static WorkController workController;
+    private static ClientController clientController;
+    private static String auth;
+    private static String serverPath;
+    private static String login;
 
     public static String getLogin() {
         return login;

@@ -12,7 +12,7 @@ public class ServerApp {
     public static void main(String[] args) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try{
+        try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
@@ -21,14 +21,14 @@ public class ServerApp {
                         public void initChannel(Channel ch) {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(
-                                    new ObjectDecoder(20 * 1_000_000,ClassResolvers.cacheDisabled(null)),
+                                    new ObjectDecoder(20 * 1_000_000, ClassResolvers.cacheDisabled(null)),
                                     new ObjectEncoder(),
                                     new BasicHandler());
                         }
                     });
-            ChannelFuture f = serverBootstrap.bind(45003).sync();
+            ChannelFuture f = serverBootstrap.bind(45004).sync();
             f.channel().closeFuture().sync();
-        }finally {
+        } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }

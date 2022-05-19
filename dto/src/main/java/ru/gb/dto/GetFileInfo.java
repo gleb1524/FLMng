@@ -14,14 +14,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 public class GetFileInfo {
+    private TableView<FileInfo> filesTable;
+    private TextField address;
+    private Path path;
 
-    public void updateList(Path path, TableView<FileInfo> fileDir, TextField address) {
+    public void updateList(Path updatePath, TableView<FileInfo> tableView, TextField currentAddress) {
         try {
-            Path currentPath = path.normalize().toAbsolutePath();
-            address.setText(currentPath.toString());
-            fileDir.getItems().clear();
-            fileDir.getItems().addAll(Files.list(path).map(FileInfo::new).collect(Collectors.toList()));
-            fileDir.sort();
+            Path currentPath = updatePath.normalize().toAbsolutePath();
+            currentAddress.setText(currentPath.toString());
+            tableView.getItems().clear();
+            tableView.getItems().addAll(Files.list(updatePath).map(FileInfo::new).collect(Collectors.toList()));
+            tableView.sort();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "По какой-то неведомой причине не удалось обновить список файлов", ButtonType.OK);
             alert.showAndWait();
@@ -29,6 +32,9 @@ public class GetFileInfo {
     }
 
     public GetFileInfo(TableView<FileInfo> filesTable, Path path, TextField address) {
+        this.filesTable = filesTable;
+        this.address = address;
+        this.path = path;
 
         updateList(path, filesTable, address);
 
@@ -48,21 +54,21 @@ public class GetFileInfo {
 
         TableColumn<FileInfo, Long> fileSizeColumn = new TableColumn("Size");
         fileSizeColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSize()));
-        fileSizeColumn.setCellFactory(column -> new TableCell<FileInfo, Long>(){
+        fileSizeColumn.setCellFactory(column -> new TableCell<FileInfo, Long>() {
             @Override
             protected void updateItem(Long item, boolean empty) {
                 super.updateItem(item, empty);
-                if(item==null|| empty){
+                if (item == null || empty) {
                     setText(null);
                     setStyle("");
-                }else{
+                } else {
                     String text = String.format("%,d bytes", item);
-                    if(item == -1L){
+                    if (item == -1L) {
                         text = "[DIR]";
-                    }else if(item >=10_000 && item <= 1_000_000){
-                        text = String.format("%d KB", item/1024);
-                    }else if(item >=1_000_000){
-                        text = String.format("%d MB", item/(1024*1024));
+                    } else if (item >= 10_000 && item <= 1_000_000) {
+                        text = String.format("%d KB", item / 1024);
+                    } else if (item >= 1_000_000) {
+                        text = String.format("%d MB", item / (1024 * 1024));
                     }
                     setText(text);
                 }
@@ -73,16 +79,18 @@ public class GetFileInfo {
         filesTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getClickCount() == 2){
+                if (mouseEvent.getClickCount() == 2) {
                     Path path = Paths.get(address.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFileName());
-                    if(Files.isDirectory(path)){
+                    if (Files.isDirectory(path)) {
                         updateList(path, filesTable, address);
+                    } else {
+                        address.setText(path.normalize().toString());
                     }
                 }
             }
         });
 
-        filesTable.getColumns().addAll(fileTypeColumn, fileNameColumn,fileSizeColumn, lastModifiedColumn);
+        filesTable.getColumns().addAll(fileTypeColumn, fileNameColumn, fileSizeColumn, lastModifiedColumn);
     }
 
 

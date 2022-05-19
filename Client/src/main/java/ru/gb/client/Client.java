@@ -39,15 +39,15 @@ public class Client extends Application {
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new Thread(() -> {
             try {
-               new NettyClient();
+                new NettyClient();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
-    launch();
+        launch();
     }
 
 }

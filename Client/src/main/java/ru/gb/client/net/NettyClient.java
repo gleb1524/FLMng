@@ -30,10 +30,10 @@ public class NettyClient {
         bootstrap
                 .group(eventLoopGroup)
                 .channel(NioSocketChannel.class);
-        bootstrap.remoteAddress("localhost", 45003);
+        bootstrap.remoteAddress("localhost", 45004);
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(SocketChannel socketChannel)  {
+            protected void initChannel(SocketChannel socketChannel) {
                 socketChannel.pipeline().addLast(
                         new ObjectDecoder(20 * 1_000_000, ClassResolvers.cacheDisabled(null)),
                         new ObjectEncoder(),
